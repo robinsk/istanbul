@@ -95,8 +95,8 @@ var {
 }
 
 #application aside.user-list ul li {
-    margin: 0;
-    padding: 0;
+    margin: 2px 0px;
+    padding: 0px 0px 0px 20px;
 }
 
 #application section.output {
@@ -115,6 +115,30 @@ var {
     background-color: transparent;
     background-position: left top;
     background-repeat: none;
+}
+
+#application section.output article.user-says {
+
+}
+
+#application section.output article.user-says time {
+
+}
+
+#application section.output article.user-says span.nick {
+
+}
+
+#application section.output article.user-says span.nick:before {
+	content: "<";
+}
+
+#application section.output article.user-says span.nick:after {
+	content: ">";
+}
+
+#application section.output article.user-says span.text {
+
 }
 
 #application section.input {

@@ -80,7 +80,7 @@ Server.DEFAULT_HOST = '0.0.0.0';
 ////////////////////
 
 /**
- * A hashmap of <nick, client> pairs.
+ * A hashmap of <sessionId, client> pairs.
  *
  * @type Object
  */
@@ -238,34 +238,43 @@ Server.prototype.broadcast = function(message) {
     }
 };
 
-Server.prototype.findNickBySessionId = function(sessionId) {
-    for (var nick in this.clients) {
-        if (this.clients[nick].sessionId == sessionId) {
-            return nick;
-        }
-    }
-    
-    return null;
-};
-
-Server.prototype.findClientByNick = function(nick) {
-    for (var clientNick in this.clients) {
-        if (clientNick == nick) {
-            return this.clients[clientNick];
-        }
-    }
-    
+Server.prototype.getClient = function(sessionId) {
+	if (this.clients[sessionId]) {
+		return this.clients[sessionId];
+	}
     return null;
 };
 
 Server.prototype.commands = {
-    nick: function(client, value) {
-        
+    nick: function(sessionId, nick, value) {
+		// TODO: sanitize value
+		this.clients[sessionId].nick = value;
+		this.broadcast({
+			type: 'nick-change',
+			oldNick: nick,
+			newNick: value
+		});
     },
     
-    say: function(client, value) {
-        
-    }
+    say: function(sessionId, nick, value) {
+		// TODO: sanitize value
+		this.broadcast({
+			type: 'user-says',
+			nick: this.clients[sessionId].nick,
+			text: value
+		});
+    },
+
+	who: function(sessionId, nick) {
+		var list = [];
+		for (var clientSessionId in this.clients) {
+			list.push(this.clients[clientSessionId].nick);
+		}
+		this.clients[sessionId].send({
+			type: 'nick-list',
+			list: list
+		});
+	}
 };
 
 /////////////////////
@@ -280,8 +289,29 @@ Server.prototype._processMessage = function(message, client) {
     if (typeof message.command == 'string') {
         if (typeof this.commands[message.command] == 'function') {
             // valid command
-        }
-    }
+			var commandArguments = [
+				client.sessionId,
+				this.clients[client.sessionId].nick
+			];
+
+			if (message.value) {
+				commandArguments.push(message.value);
+			}
+
+			this.commands[message.command].apply(this, commandArguments);
+        } else {
+			// invalid command
+			client.send({
+				type: 'error',
+				text: "Unknown command '" + message.command + "'"
+			});
+		}
+    } else {
+		client.send({
+			type: 'error',
+			text: "Malformed message: '" + message + "'"
+		});
+	}
 };
 
 /**
@@ -291,7 +321,7 @@ Server.prototype._processMessage = function(message, client) {
  */
 Server.prototype._onClientMessage = function(message, client) {
     if (typeof message == 'string') {
-        var match = message.match(/^\/([a-z]+) (.+)$/im);
+		var match = message.match(/^\/(\w+)(?:\s(.+)*)*$/im);
         if (match) {
             this._processMessage({
                 command: match[1],
@@ -320,10 +350,12 @@ Server.prototype._onClientMessage = function(message, client) {
  * @private
  */
 Server.prototype._onClientConnect = function(client) {
-    client.send({
-        type: 'expected-action',
-        text: 'Please send me a message like /nick lonelygirl16'
-    });
+	client.nick = client.sessionId;
+	this.clients[client.sessionId] = client;
+	this.broadcast({
+		type: 'user-connected',
+		nick: client.nick
+	});
 };
 
 /**
@@ -332,6 +364,15 @@ Server.prototype._onClientConnect = function(client) {
  * @private
  */
 Server.prototype._onClientDisconnect = function(client) {
-    // TODO: implement
+    if (this.clients[client.sessionId]) {
+		this.broadcast({
+			type: 'user-disconnected',
+			nick: this.clients[client.sessionId].nick
+		});
+		delete this.clients[client.sessionId];
+	}
 };
+
+
+
 
