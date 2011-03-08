@@ -1,0 +1,10 @@
+.settings/
+.project/
+build/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.log
+pom.xml
+target/

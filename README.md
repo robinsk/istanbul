@@ -1,4 +1,4 @@
-Istanbul - a simple HTML5 chat system
+Istanbul — a simple HTML5 chat system
 =====================================
 
 Made this for an HTML5 workshop in Istanbul. Consists of:
@@ -10,7 +10,8 @@ Made this for an HTML5 workshop in Istanbul. Consists of:
 Server
 ------
 
-**Requirements**:
+**Dependencies**:
+
 * [node.js](http://nodejs.org/)
 * [Socket.IO](http://socket.io)
 

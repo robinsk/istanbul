@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Sample client</title>
+        
+        <link rel="stylesheet" href="styles.css" />
+        
+        <script src="js/jquery.js"></script>
+        <script src="js/client.js"></script>
+        <script src="js/socket.io.js"></script>
+        
+        <script>
+            var client;
+            $(document).ready(function() {
+                client = new ChatClient();
+                
+                var commandHistory = [];
+                
+                function preParseCommand(command) {
+                    var match;
+                    
+                    // match /connect host [port]
+                    match = command.match(/^\/connect ([^ ]+)(?: (\d+))?$/im);
+                    if (match) {
+                        var host = match[1];
+                        var port = 80;
+                        if (match[2]) {
+                            port = match[2];
+                        }
+                        client.connect(host, port);
+                        return true;
+                    }
+                    
+                    return false;
+                }
+                
+                $('#application section.input .command').keydown(function(event) {
+                    console.log('keyCode = ', event.keyCode);
+                    
+                    if (event.keyCode == 38) {
+                        
+                    } else if (event.keyCode == 13 && this.value.trim().length > 0) {
+                        var command = this.value.trim();
+                        commandHistory.push(command);
+                        if (!preParseCommand(command)) {
+                            client.parseCommand(this.value);
+                        }
+                        this.value = "";
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <section id="application">
+            <h1>istanbul: chat</h1>
+            <header>
+            </header>
+            <section class="output">
+                <article class="notice">You are now connected</article>
+                <article class="error">Error message from server</article>
+                <article class="user-says">
+                    <strong>robinsk</strong>
+                    <span>hallo, verden!</span>
+                </article>
+                <article class="user-says">
+                    <strong>arne</strong>
+                    <span>heisann sveisann</span>
+                </article>
+                <article class="user-says">
+                    <strong>robinsk</strong>
+                    <span>e det nokka drag i førrtøyninga?</span>
+                </article>
+                <article class="user-msg">
+                    <strong>shifanamol</strong>
+                    <span>hello please answer my email!</span>
+                </article>
+                <article class="user-connected">
+                    <strong>løyf</strong>
+                    <span>connected</span>
+                </article>
+                <article class="user-says">
+                    <strong>robinsk</strong>
+                    <span>sup løyf?</span>
+                </article>
+                <article class="user-disconnected">
+                    <strong>løyf</strong>
+                    <span>disconnected</span>
+                </article>
+            </section>
+            <aside class="sidebar">
+                <header><var class="number-of-people">4</var> people hanging out</header>
+                <ul class="nick-list">
+                    <li>arne</li>
+                    <li>bjarne</li>
+                    <li class="self">robinsk</li>
+                </ul>
+            </aside>
+            <section class="input">
+                <input type="text" class="command" />
+            </section>
+            <footer>
+                Status: OK
+            </footer>
+        </section>
+    </body>
+</html>

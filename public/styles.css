@@ -1,0 +1,179 @@
+
+var {
+    font-style: normal;
+}
+
+#application {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+}
+
+#application > h1 {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    height: 23px;
+    line-height: 23px;
+    
+    padding: 0;
+    margin: 0;
+    
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    text-shadow: 1px 1px 1px #fff;
+    
+    
+    background: #c3c3c3;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#c3c3c3), to(#b1b1b1));
+    background: -moz-linear-gradient(#c3c3c3, #b1b1b1);
+    background: linear-gradient(#c3c3c3, #b1b1b1);
+    
+    
+    border-left: 1px solid #898989;
+    border-right: 1px solid #898989;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    
+    cursor: default;
+}
+
+#application > header {
+    position: absolute;
+    top: 23px;
+    right: 0px;
+    left: 0px;
+    height: 23px;
+    line-height: 23px;
+    border-left: 1px solid #898989;
+    border-right: 1px solid #898989;
+    background-color: #b1b1b1;
+}
+
+#application > aside.sidebar {
+    position: absolute;
+    top: 46px;
+    right: 0px;
+    bottom: 83px;
+    width: 25%;
+    background-color: #b1b1b1;
+    border-right: 1px solid #898989;
+}
+
+#application aside.sidebar header {
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 93%;
+}
+
+#application aside.sidebar ul.nick-list {
+    display: block;
+    
+    padding: 0;
+    margin: 0;
+    background-color: #d5d9e2;
+    
+    position: absolute;
+    top: 20px;
+    right: 8px;
+    bottom: 0px;
+    left: 8px;
+    overflow: auto;
+    
+    list-style-type: none;
+}
+
+#application aside.user-list ul li {
+    margin: 0;
+    padding: 0;
+}
+
+#application section.output {
+    position: absolute;
+    top: 46px;
+    bottom: 83px;
+    left: 0px;
+    width: 75%;
+    overflow-y: scroll;
+    border-left: 1px solid #898989;
+}
+
+#application section.output article {
+    display: block;
+    line-height: 16px;
+    background-color: transparent;
+    background-position: left top;
+    background-repeat: none;
+}
+
+#application section.input {
+    position: absolute;
+    right: 0px;
+    bottom: 26px;
+    left: 0px;
+    height: 56px;
+    
+    background-color: #b1b1b1;
+    border-left: 1px solid #898989;
+    border-right: 1px solid #898989;
+    border-bottom: 1px solid #747474;
+}
+
+#application section.input input.command {
+    display: block;
+    
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    bottom: 10px;
+    left: 8px;
+    
+    border: 0;
+    padding: 2px 4px;
+    background-color: #fff;
+}
+
+#application footer {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    
+    height: 26px;
+    line-height: 26px;
+    
+    font-size: 85%;
+    padding: 0px 10px;
+    
+    color: #666;
+    text-shadow: 1px 1px 1px #fff;
+    
+    background: #bdbdbd;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#bdbdbd), to(#979797));
+    background: -moz-linear-gradient(#bdbdbd, #979797);
+    background: linear-gradient(#bdbdbd, #979797);
+    
+    -webkit-box-shadow: #474747 0px -1px 1px;
+    -moz-box-shadow: #474747 0px -1px 1px;
+    box-shadow: #474747 0px -1px 1px;
+    
+    border: 1px solid #8b8b8b;
+    border-top-color: #d7d7d7;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    
+    cursor: default;
+}
+
+
