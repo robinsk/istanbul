@@ -12,8 +12,7 @@
 ////////////////////////////////////////////////////////////////////////
 var http    = require('http'),
     exec    = require('child_process').exec,
-    io      = require('socket.io'),
-    inspect = require('util').inspect;
+    io      = require('socket.io');
 
 /**
  * Start a server.
