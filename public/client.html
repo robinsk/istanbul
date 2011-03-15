@@ -2,57 +2,53 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Sample client</title>
+        <title>istanbul: chat</title>
         
         <link rel="stylesheet" href="styles.css" />
         
-        <script src="js/jquery.js"></script>
-        <script src="js/istanbul.js"></script>
-        <script src="js/socket.io.js"></script>
+        <script src="http://localhost:31337/socket.io/socket.io.js"></script>
+        <script src="client.js"></script>
         
         <script>
+            // declare client here (global scope), so that we
+            // may reach it everywhere (e.g. from the console)
             var client;
-            $(document).ready(function() {
-                client = new istanbul.Client({
-					messageContainer: $('#application > section.output'),
-					nickList: $('#application > aside ul.nick-list'),
-					peopleCount: $('#application > aside var.number-of-people'),
-					statusBar: $('#application > footer.status-bar')
-				});
-                
-                var commandHistory = [];
-                
-                $('#application section.input .command').keydown(function(event) {
-                    //console.log('keyCode = ', event.keyCode);
+            
+            // wait until the DOM is loaded before we instantiate
+            // the client (because we need to grab some elements)
+            document.addEventListener("readystatechange", function(event) {
+                if (document.readyState == "complete") {
+                    console.log("DOM ready, init application");
                     
-                    if (event.keyCode == 38) {
-                        // arrow up
-                    } else if (event.keyCode == 13 && this.value.trim().length > 0) {
-						// enter
-                        var command = this.value.trim();
-                        commandHistory.push(command);
-						client.parseCommand(command);
-                        this.value = "";
-                    }
-                });
+                    // ta-da! our own DOM query function shorthand
+                    function $(selector) {
+                        return document.querySelector(selector);
+                    };
+                    
+                    // instantiate client
+                    client = new Client({
+                        input: $("#application section.input input"),
+                        messages: $("#application section.messages"),
+                        nickList: $("#application aside ul"),
+                        statusBar: $("#application footer")
+                    });
+                }
             });
         </script>
     </head>
     <body>
         <section id="application">
             <h1>istanbul: chat</h1>
-            <header>
-            </header>
-            <section class="output">
-			</section>
-            <aside class="sidebar">
-                <header><var class="number-of-people">0</var> people hanging out</header>
-                <ul class="nick-list"></ul>
+            <header></header>
+            <section class="messages"></section>
+            <aside>
+                <header>connected users:</header>
+                <ul></ul>
             </aside>
             <section class="input">
-                <input type="text" class="command" value="/connect localhost 31337" />
+                <input type="text" autofocus="autofocus" />
             </section>
-            <footer class="status-bar"></footer>
+            <footer></footer>
         </section>
     </body>
 </html>
