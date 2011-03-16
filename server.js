@@ -10,56 +10,121 @@
 // Imports:
 //
 ////////////////////////////////////////////////////////////////////////
-var http    = require("http"),
-    exec    = require("child_process").exec,
-    io      = require("socket.io"),
-    url     = require("url");
+var express = require("express"),
+    io      = require("socket.io");
 
 ////////////////////////////////////////////////////////////////////////
 //
-// Server:
+// Setup express app (http server):
 //
 ////////////////////////////////////////////////////////////////////////
 
 /**
- * Create a new Server object.
- *
- * @class This class creates a web server, 
- * and wraps some Socket.IO magic around it.
- * @constructor
- *
- * @param 
- *
- * @constructor
+ * Create express server.
  */
-var Server = module.exports = function(port, host) {
-    if (typeof port == 'number') {
-        this._port = port;
+var server = module.exports = express.createServer();
+
+/**
+ * Configure app with common middleare.
+ */
+server.configure(function() {
+    // access log
+    server.use(express.logger({
+        format: "\x1b[1m:response-time\x1b[0mms" +
+                "\t\x1b[33m:method\x1b[0m\t\x1b[32m:url\x1b[0m"
+    }));
+
+    // override express' powered-by header
+    server.use(function(req, res, next) {
+        res.setHeader("X-Powered-By", "your mother");
+        next();
+    });
+
+    // smarter handling of favicon (just because)
+    server.use(express.favicon(__dirname + "/public/favicon.ico"));
+
+    // serve static files intelligently
+    server.use(express.static(__dirname + '/public'));
+
+    // write response time as response header
+    server.use(express.responseTime());
+});
+
+/**
+ * Middleware config for development environment.
+ */
+server.configure("development", function() {
+    server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+/**
+ * Middleware config for production environment.
+ */
+server.configure("production", function() {
+    server.use(express.errorHandler({ dumpExceptions: true, showStack: false }));
+});
+
+/**
+ * A route for dumping requests.
+ */
+server.all("/dump-request", function(req, res) {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.write(req.method + " " + req.url + " HTTP/" + req.httpVersion + "\n");
+    
+    function ucf(h) {
+        return h.split("-").map(function(s) {
+            return s[0].toUpperCase() + s.substr(1);
+        }).join("-");
     }
     
-    if (typeof host == 'string') {
-        this._host = host;
+    for (var header in req.headers) {
+        res.write(ucf(header) + ": " + req.headers[header] + "\n");
     }
-};
 
-///////////////////
+    res.end();
+    
+    /*
+    req.on("data", function(chunk) {
+        res.write(chunk);
+    });
+    
+    res.on("end", function() {
+        for (var trailer in req.trailers) {
+            res.write(ucf(trailer) + ": " + req.trailers[trailer] + "\n");
+        }
+        res.end();
+    });
+    */
+});
+
+////////////////////////////////////////////////////////////////////////
 //
-// Class variables:
+// Setup Socket.IO (chat server):
 //
-///////////////////
+////////////////////////////////////////////////////////////////////////
 
 /**
- * The default listening port.
- * @final
+ * Chat server constructor.
  */
-Server.DEFAULT_PORT = 80;
+function ChatServer(httpServer) {
 
-/**
- * The default hostname/IP address to listen to.
- * Listening to 0.0.0.0 is equal to any.
- * @final
- */
-Server.DEFAULT_HOST = '0.0.0.0';
+    this.httpServer = httpServer;
+    this.socketServer = io.listen(httpServer, { flashPolicyServer: false });
+    
+    var self = this;
+    
+    this.socketServer.on('clientMessage', function(message, client) {
+        self._onClientMessage(message, client);
+    });
+     
+    this.socketServer.on('clientConnect', function(client) {
+        self._onClientConnect(client);
+    });
+    
+    this.socketServer.on('clientDisconnect', function(client) {
+        self._onClientDisconnect(client);
+    });
+}
 
 ////////////////////
 //
@@ -72,29 +137,7 @@ Server.DEFAULT_HOST = '0.0.0.0';
  *
  * @type Object
  */
-Server.prototype.clients = {};
-
-/////////////////////
-//
-// Private variables:
-//
-/////////////////////
-
-/**
- * The hostname/IP address the server should listen on.
- *
- * @private
- * @type String
- */
-Server.prototype._host = Server.DEFAULT_HOST;
-
-/**
- * The port number the server should listen on.
- *
- * @private
- * @type int
- */
-Server.prototype._port = Server.DEFAULT_PORT;
+ChatServer.prototype.clients = {};
 
 /**
  * HTTP server.
@@ -102,7 +145,7 @@ Server.prototype._port = Server.DEFAULT_PORT;
  * @private
  * @type http.Server
  */
-Server.prototype._httpServer = null;
+ChatServer.prototype.httpServer = null;
 
 /**
  * Socket.IO listener.
@@ -110,7 +153,7 @@ Server.prototype._httpServer = null;
  * @private
  * @type io.Listener
  */
-Server.prototype._ioListener = null;
+ChatServer.prototype.socketServer = null;
 
 ////////////////////
 //
@@ -119,67 +162,22 @@ Server.prototype._ioListener = null;
 ////////////////////
 
 /**
- * Start server.
- *
- * @returns The Server instance.
- * @type Server
- */
-Server.prototype.start = function() {
-    
-    var self = this;
-
-    // stop if already running
-    if (this._httpServer) {
-        this.stop();
-    }
-    
-    // reset clients
-    this.clients = {};
-
-    // create server
-    this._httpServer = http.createServer(function(request, response) {
-		self._onRequest(request, response);
-    });
-
-    // listen for reqular requests
-    this._httpServer.listen(this._port, this._host);
-    
-    // listen for socket connections
-    this._ioListener = io.listen(this._httpServer, {
-        flashPolicyServer: false
-    });
-    
-    this._ioListener.on('clientMessage', function(message, client) {
-        self._onClientMessage(message, client);
-    });
-     
-    this._ioListener.on('clientConnect', function(client) {
-        self._onClientConnect(client);
-    });
-    
-    this._ioListener.on('clientDisconnect', function(client) {
-        self._onClientDisconnect(client);
-    });
-
-    return this;
-};
-
-/**
  * Stop server.
  */
-Server.prototype.stop = function() {
+ChatServer.prototype.stop = function() {
+    // send notice before shutting down
     this.broadcast({
-        type: "server-notice",
+        type: "notice",
         text: "Shutting down server"
     });
     
-    if (this._ioListener) {
-        this._ioListener = null;
+    if (this.socketServer) {
+        this.socketServer = null;
     }
     
-    if (this._httpServer) {
-        this._httpServer.close();
-        this._httpServer = null;
+    if (this.httpServer) {
+        this.httpServer.close();
+        this.httpServer = null;
     }
 };
 
@@ -188,25 +186,54 @@ Server.prototype.stop = function() {
  *
  * @param message
  */
-Server.prototype.broadcast = function(message) {
-    if (this._ioListener) {
-        this._ioListener.broadcast(message);
+ChatServer.prototype.broadcast = function(message) {
+    if (this.socketServer) {
+        this.socketServer.broadcast(message);
     }
 };
 
-Server.prototype.commands = {
+/**
+ * Commands a client can "call".
+ */
+ChatServer.prototype.commands = {
+    /**
+     * Change nick.
+     */
     nick: function(sessionId, nick, value) {
-		// TODO: sanitize value
-		this.clients[sessionId].nick = value;
-		this.broadcast({
-			type: 'nick-change',
-			oldNick: nick,
-			newNick: value
-		});
+        var client = this.clients[sessionId];
+        var validNick = value.match(/^[\w-_æøå]+$/im);
+        var nickExists = false;
+        for (var clientSessionId in this.clients) {
+            if (this.clients[clientSessionId].nick == value) {
+                nickExists = true;
+                break;
+            }
+        }
+
+        if (nickExists) {
+            client.send({
+                type: "error",
+                text: "The nick '" + value + "' is already taken"
+            });
+        } else if (!validNick) {
+            client.send({
+                type: "error",
+                text: "'" + value + "' is not a valid nick"
+            });
+        } else {
+		    this.clients[sessionId].nick = value;
+		    this.broadcast({
+			    type: 'nick-change',
+			    oldNick: nick,
+			    newNick: value
+		    });
+        }
     },
     
+    /**
+     * Say something.
+     */
     say: function(sessionId, nick, value) {
-		// TODO: sanitize value
 		this.broadcast({
 			type: 'user-says',
 			nick: this.clients[sessionId].nick,
@@ -214,6 +241,9 @@ Server.prototype.commands = {
 		});
     },
 
+    /**
+     * Get the nick list.
+     */
 	who: function(sessionId, nick) {
 		var list = [];
 
@@ -234,22 +264,10 @@ Server.prototype.commands = {
 //
 /////////////////////
 
-Server.prototype._onRequest = function(request, response) {
-    response.writeHead(200, {
-        "Content-Type": "text/plain"
-    });
-
-    var parsedUrl = url.parse(request.url);
-    console.log("url: %j", parsedUrl);
-    
-    response.write('Your IP: ' + request.connection.remoteAddress);
-    
-    response.end();
-};
-
-Server.prototype._processMessage = function(message, client) {
-    console.log('Got message: ', message);
-    
+/**
+ * Process an incoming message (invoke a command or send error).
+ */
+ChatServer.prototype._processMessage = function(message, client) {
     if (typeof message.command == 'string') {
         if (typeof this.commands[message.command] == 'function') {
             // valid command
@@ -262,6 +280,7 @@ Server.prototype._processMessage = function(message, client) {
 				commandArguments.push(message.value);
 			}
 
+            // invoke command
 			this.commands[message.command].apply(this, commandArguments);
         } else {
 			// invalid command
@@ -283,28 +302,33 @@ Server.prototype._processMessage = function(message, client) {
  *
  * @private
  */
-Server.prototype._onClientMessage = function(message, client) {
+ChatServer.prototype._onClientMessage = function(message, client) {
+    //console.log("Client sent message: %s", message);
     if (typeof message == 'string') {
+        // regex for /<command>[ <value>]
 		var match = message.match(/^\/(\w+)(?:\s(.+)*)*$/im);
         if (match) {
+            // client sent a command, process it
             this._processMessage({
                 command: match[1],
                 value: match[2]
             }, client);
         } else {
+            // does not match command, default to /say
             this._processMessage({
                 command: 'say',
                 value: message
             }, client);
         }
     } else if (typeof message == 'object') {
+        // the sent an object (haxx0r)
         this._processMessage(message, client);
     } else {
-        console.warn('Unknown message format');
-        client.send({
-            type: 'error',
-            text: 'Unknown message format'
-        });
+        // guru meditation
+        var msg = "Unknown message type '" + typeof message + "', " +
+                  "expects string or JSON object with command [and value]";
+        console.warn(msg);
+        client.send({ type: "error", text: msg });
     }
 };
 
@@ -313,11 +337,12 @@ Server.prototype._onClientMessage = function(message, client) {
  *
  * @private
  */
-Server.prototype._onClientConnect = function(client) {
+ChatServer.prototype._onClientConnect = function(client) {
+    //console.log("Client connected, sessionId: %s", client.sessionId);
 	client.nick = client.sessionId;
 	this.clients[client.sessionId] = client;
-	this.broadcast({
-		type: 'user-connected',
+	client.broadcast({
+		type: "user-connected",
 		nick: client.nick
 	});
 };
@@ -327,24 +352,30 @@ Server.prototype._onClientConnect = function(client) {
  *
  * @private
  */
-Server.prototype._onClientDisconnect = function(client) {
+ChatServer.prototype._onClientDisconnect = function(client) {
+    //console.log("Client disconnected, sessionId: %s", client.sessionId);
     if (this.clients[client.sessionId]) {
 		this.broadcast({
-			type: 'user-disconnected',
+			type: "user-disconnected",
 			nick: this.clients[client.sessionId].nick
 		});
 		delete this.clients[client.sessionId];
 	}
 };
 
-////////////////////////////////////////////////////////////////////////
-//
-// Bootstrapping:
-//
-////////////////////////////////////////////////////////////////////////
+exports.ChatServer = ChatServer;
 
+/**
+ * Only listen if run directly.
+ */
 if (!module.parent) {
-	new Server(process.env.PORT || 31337).start();
+    var port = process.env.PORT || 3000;
+
+    var chatServer = new ChatServer(server);
+
+    server.listen(port, function() {
+        var address = "http://" + server.address().address;
+        if (port != 80) address += ":" + port;
+        console.log("Chat server started at \x1b[1m%s/\x1b[0m", address);
+    });
 }
-
-

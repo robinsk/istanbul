@@ -111,6 +111,32 @@
     background-color: transparent;
     background-position: left top;
     background-repeat: none;
+    padding: 1px 2px;
+}
+
+#application section.messages article.error {
+    font-weight: bold;
+    color: #c00;
+}
+
+#application section.messages article.notice {
+    font-weight: bold;
+    color: #7AA3D0;
+}
+
+#application section.messages article var.nick {
+    font-style: normal;
+}
+
+#application section.messages article time {
+    font-style: normal;
+    font-weight: normal;
+}
+
+#application section.messages article.user-connected,
+#application section.messages article.user-disconnected,
+#application section.messages article.nick-change {
+    font-weight: bold;
 }
 
 #application section.input {
@@ -161,7 +187,7 @@
     background: linear-gradient(#bdbdbd, #979797);
     
     -webkit-box-shadow: #474747 0px -1px 1px;
-    -moz-box-shadow: #474747 0px -1px 1px;
+    -moz-box-shadow: #474747 0px -1px 1gpx;
     box-shadow: #474747 0px -1px 1px;
     
     border: 1px solid #8b8b8b;
@@ -170,6 +196,23 @@
     border-bottom-right-radius: 8px;
     
     cursor: default;
+}
+
+#application footer span.error {
+    background: transparent url(images/errorIcon.png) no-repeat left 3px;
+    color: #c00;
+    text-shadow: 1px 1px 1px #ffc2c2;
+    padding-left: 16px;
+}
+
+#application footer span.warn {
+    background: transparent url(images/warningIcon.png) no-repeat left 3px;
+    padding-left: 16px;
+}
+
+#application footer span.loading {
+    background: transparent url(images/spinner.gif) no-repeat left top;
+    padding-left: 20px;
 }
 
 
