@@ -1,0 +1,42 @@
+{
+    "name": "istanbul",
+    "version": "0.1.0",
+    "description": "A simple chat system with Web Sockets and HTML5",
+    "homepage": "https://github.com/robinsk/istanbul",
+    "keywords": [
+        "websocket",
+        "websockets",
+        "web sockets",
+        "html5",
+        "socket.io",
+        "chat"
+    ],
+    "maintainers": [
+        {
+            "name": "Robin Skoglund",
+            "email": "rsk@knowit.no"
+        },
+        {
+            "name": "Vidar Johansen",
+            "email": "vij@knowit.no"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/robinsk/istanbul.git"
+        }
+    ],
+    "bugs": {
+        "web": "http://github.com/robinsk/istanbul/issues"
+    },
+    "licenses": [
+        {
+            "type": "New BSD"
+            "url": "https://github.com/robinsk/istanbul/blob/master/LICENSE"
+        }
+    ],
+    "engine": [
+        "node"
+    ]
+}
