@@ -64,6 +64,8 @@ function Client(gui) {
     } else {
         throw new TypeError("Constructor expects an object with GUI elements");
     }
+
+    this.gui.input.value = "/connect " + window.location.hostname + " " + window.location.port;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +147,7 @@ Client.prototype.connect          = function(host, port) {
     // connect to server
     this.socket.connect();
 
-    this.updateStatus("Connecting to " + host + ":" + port + " ...");
+    this.updateStatus("Connecting to " + host + ":" + port + " ...", "loading");
 };
 
 /**
@@ -306,7 +308,7 @@ Client.prototype._onDisconnect = function() {
 Client.prototype._onConnectFailed = function() {
     this.clients = [];
     this.populateNickList();
-    this.updateStatus("Connection to server failed. Check console.");
+    this.updateStatus("Connection to server failed. Check console.", "error");
 };
 
 /**

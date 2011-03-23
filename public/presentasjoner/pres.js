@@ -3,11 +3,28 @@ var slideshow;
 document.addEventListener("readystatechange", function() {
     if (document.readyState == "complete") {
         slideshow = new Slideshow();
-        slideshow.start();
+        prettyPrint();
     }
 });
 
 function Slideshow() {
+    var self = this;
+
+    document.addEventListener("keydown", function(event) {
+        self.keyHandler(event);
+    });
+
+    document.addEventListener("click", function(event) {
+        self.clickHandler(event);
+    });
+
+    this.slides = document.querySelectorAll("section.slide");
+
+    console.log("Number of slides: %d", this.slides.length);
+
+    this.seek(0);
+
+    setInterval(function() { self.checkLocationHash(); }, 50);
 }
 
 Slideshow.prototype.slides = null;
@@ -15,20 +32,39 @@ Slideshow.prototype.slides = null;
 Slideshow.prototype.currentSlide = null;
 
 Slideshow.prototype.__defineGetter__("currentIndex", function() {
-    return this.slides.indexOf(this.currentSlide);
+    for (var i = 0; i < this.slides.length; i++) {
+        if (this.slides[i] == this.currentSlide) {
+            return i;
+        }
+    }
+    return -1;
 });
 
-Slideshow.prototype.start = function() {
-    var self = this;
-    document.addEventListener("keydown", function(event) {
-        self.keyHandler(event);
-    });
+Slideshow.prototype.checkLocationHash = function() {
+    if (window.location.hash) {
+        var match = window.location.hash.match(/#(\d+)/);
+        if (match) {
+            var hashSlide = parseInt(match[1]);
+            if (hashSlide != this.currentIndex) {
+                this.seek(hashSlide);
+            }
+        }
+    }
+};
+
+Slideshow.prototype.clickHandler = function(event) {
+    //console.log("click event: ", event);
+    if (event.button == 0) {
+        if (event.ctrlKey) {
+            this.prev();
+        } else {
+            this.next();
+        }
+    }
 };
 
 Slideshow.prototype.keyHandler = function(event) {
     //console.log("event.keyCode = " + event.keyCode);
-    console.log("event: ", event);
-    
     switch (event.keyCode) {
         case 13: // enter
         case 32: // space
@@ -54,29 +90,43 @@ Slideshow.prototype.keyHandler = function(event) {
 
 Slideshow.prototype.hide = function(element) {
     if (typeof element.originalDisplayStyle == "undefined") {
-        element.originalDisplayStyle = element.style.display;
+        element.originalDisplayStyle = getComputedStyle(element).getPropertyValue("display");
     }
     element.style.display = "none";
-});
+};
 
 Slideshow.prototype.show = function(element) {
     element.style.display = element.originalDisplayStyle;
-});
+};
 
 Slideshow.prototype.seek = function(index) {
-    if (index < 0 || index >= this.slides.length) {
+    if (index < 0 || index >= this.slides.length || this.slides.length < 1) {
         return;
     }
-    
-    if (this.currentSlide) {
-    
+
+    for (var i = 0; i < this.slides.length; i++) {
+        if (i == index) {
+            this.show(this.slides[i]);
+            this.currentSlide = this.slides[i];
+        } else {
+            this.hide(this.slides[i]);
+        }
     }
 };
 
 Slideshow.prototype.next = function() {
-    this.seek(this.currentIndex++);
+    //this.seek(this.currentIndex + 1);
+    var nextSlide = this.currentIndex + 1;
+    if (nextSlide < this.slides.length) {
+        window.location.hash = "#" + nextSlide;
+    }
 };
 
 Slideshow.prototype.prev = function() {
-    this.seek(this.currentIndex--);
+    //this.seek(this.currentIndex - 1);
+    var prevSlide = this.currentIndex - 1;
+    if (prevSlide >= 0) {
+        window.location.hash = "#" + prevSlide;
+    }
 };
+

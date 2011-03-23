@@ -1,3 +1,99 @@
 <!doctype html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <title>JS-snask</title>
+
+        <link rel="stylesheet" type="text/css" href="prettify/prettify.css" />
+        <script src="prettify/prettify.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="pres.css" />
+        <script src="pres.js"></script>
+    </head>
+    <body>
+
+        <section class="slide">
+            <header>
+                <h1>Andre JS-apier i HTML5</h1>
+            </header>
+            <article>
+                <ul>
+                    <li><code><strong>JSON</strong></code></li>
+                    <li><code><strong>localStorage</strong></code></li>
+                    <li><code><strong>sessionStorage</strong></code></li>
+                    <li>IndexedDB</li>
+                    <li>File API</li>
+                    <li>Server-Sent Events</li>
+                    <li>Web Workers</li>
+                    <li>Geolocation API</li>
+                    <li>Offline detection</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1>JSON</h1>
+            </header>
+            <article>
+                <ul>
+                    <li>
+                        JSON er endelig native i browsere! \o/
+                        <ul>
+                            <li>Raskere enn en hjemmesnekra implementasjon</li>
+                            <li>Sikrere enn en hjemmesnekra implementasjon</li>
+                        </ul>
+                    </li>
+                    <li>
+                        API:
+                        <ul>
+                            <li><code>JSON.parse("{ foo: 'bar' }")</code></li>
+                            <li><code>JSON.stringify({ foo: 'bar' })</code></li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1><code>localStorage</code> / <code>sessionStorage</code></h1>
+            </header>
+            <article>
+                <ul>
+                    <li><code class="prettyprint">localStorage.setItem("key", "value")</code></li>
+                    <li><code class="prettyprint">localStorage.getItem("key")</code></li>
+                    <li><code class="prettyprint">localStorage.key("key")</code></li>
+                    <li><code class="prettyprint">localStorage.clear()</code></li>
+                    <li>Key og value må være strenger</li>
+                    <li>Server har ikke tilgang til storage (i motsetning til cookies)</li>
+                    <li><code class="prettyprint">sessionStorage</code> tømmes når sesjonen går ut</li>
+                    <li><strong>Triks:</strong> <code class="prettyprint">localStorage.setItem("history", JSON.stringify(chatHistory));</code></li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1>Offline detection</h1>
+            </header>
+            <article>
+                <ul>
+                    <li>Brukes for å støtte offline webapps</li>
+                    <li>Kan f.eks. lagre unna state når man mister nett</li>
+                </ul>
+                <pre class="prettyprint">
+window.addEventListener("offline", function() {
+    // application is now offline!
+    app.saveState();
+});
+
+window.addEventListener("online", function() {
+    // application is now online
+    app.restoreState();
+});</pre>
+            </article>
+        </section>
+
+    </body>
 </html>

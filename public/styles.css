@@ -199,14 +199,14 @@
 }
 
 #application footer span.error {
-    background: transparent url(images/errorIcon.png) no-repeat left 3px;
+    background: transparent url(images/status-error.png) no-repeat left 3px;
     color: #c00;
     text-shadow: 1px 1px 1px #ffc2c2;
     padding-left: 16px;
 }
 
 #application footer span.warn {
-    background: transparent url(images/warningIcon.png) no-repeat left 3px;
+    background: transparent url(images/status-warn.png) no-repeat left 3px;
     padding-left: 16px;
 }
 

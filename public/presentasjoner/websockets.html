@@ -3,17 +3,153 @@
     <head>
         <meta charset="utf-8" />
         <title>Web Sockets</title>
-        <link rel="stylesheet" href="presentasjoner.css" />
+
+        <link rel="stylesheet" type="text/css" href="prettify/prettify.css" />
+        <script src="prettify/prettify.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="pres.css" />
         <script src="pres.js"></script>
+
     </head>
     <body>
+        
+        <!--
+        <img id="logo" src="images/logo.gif" with="156" height="45" alt="know it" />
+        -->
+
         <section class="slide">
             <header>
+                <h1>Realtime web (Comet)</h1>
             </header>
             <article>
+                <ul>
+                    <li>[obligatorisk førsteslide]</li>
+                </ul>
             </article>
-            <footer>
-            </footer>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1>Vanlig HTTP (request/response)</h1>
+            </header>
+            <article>
+                <ul>
+                    <li>Klient sender forespørsel til server</li>
+                    <li>Server svarer med respons</li>
+                    <li>Vanlig synkront opplegg (&hellip; eller asynkront med <abbr title="XmlHttpRequest (AJAX)">XHR</abbr>)</li>
+                </ul>
+                <div class="center"">
+                    <embed src="images/http-vanlig.svg" width="365" height="285" type="image/svg+xml" />
+                </div>
+                <ul>
+                    <li><strong>Klienten spør alltid serveren om ting!</strong></li> 
+                </ul>
+            </article>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1>Comet HTTP (meldinger fram og tilbake)</h1>
+            </header>
+            <article>
+                <ul>
+                    <li>Klient oppretter forbindelse til server</li>
+                    <li>Server kan sende meldinger til klient uten at klienten ber om det</li>
+                </ul>
+                <div class="center"">
+                    <embed src="images/http-comet.svg" width="365" height="285" type="image/svg+xml" />
+                </div>
+                <ul>
+                    <li><strong>Slipper å opprette HTTP-forbindelse for hver minste ting, jippi!</strong></li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1>Comet: Historikk</h1>
+            </header>
+            <article>
+                <ul>
+                    <li>
+                        <strong>Forever-Frame</strong>
+                        <ul>
+                            <li>Skjult <code>iframe</code></li>
+                            <li>Server dytter <code>&lt;script&gt;</code>-tags</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Long-Polling</strong>
+                        <ul>
+                            <li>Server lukker ikke tilkobling</li>
+                            <li>Åpner ny request hvis tilkobling timer ut</li>
+                            <li>Bruker <code>XmlHttpRequest</code> (AJAX)</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Callback-Polling/JSONP-Polling</strong>
+                        <ul>
+                            <li>Også Long-Polling</code></li>
+                            <li>Server dytter <code>&lt;script&gt;</code>-tags og spesifiserer en callback-funksjon</li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1>Comet: Fremtiden</h1>
+            </header>
+            <article>
+                <ul>
+                    <li>
+                        <strong>HTML5 WebSocket</strong>
+                        <ul>
+                            <li>API i JavaScript</li>
+                            <li>Standardisert av W3C</li>
+                            <li>Full duplex</li>
+                            <li>Binær dataoverføring</li>
+                            <li>Er ikke en "hack"</li>
+                            <li>Faktisk veldig lett å ta i bruk</li>
+                        </ul>
+                    </li>
+                </ul>
+                <pre class="prettyprint">
+var socket = new WebSocket('ws://chat.example.com/knowit');
+socket.onmessage = function (event) {
+  client.handleMessage(event.data);
+};</pre>
+            </article>
+        </section>
+
+        <section class="slide">
+            <header>
+                <h1>Socket.IO</h1>
+            </header>
+            <article>
+                <ul>
+                    <li>I workshopen bruker vi Socket.IO</li>
+                    <li>Wrapper rundt WebSocket (med masse fallbackalternativer)</li>
+                </ul>
+                <pre class="prettyprint">
+var socket = new io.Socket("10.0.0.1", { port: 3000 });
+socket.on("connect", function() {
+  console.log("Connected to server");
+});
+
+socket.on("disconnect", function() {
+  console.log("Disconnected from server");
+});
+
+socket.on("connect_failed", function() {
+  console.error("OMG connection failed");
+});
+
+socket.on("message", function(message) {
+  console.log("Got message: ", message);
+});</pre>
+            </article>
         </section>
     </body>
 </html>

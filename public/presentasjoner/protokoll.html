@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Istanbul Chat Protocol</title>
+
+        <link rel="stylesheet" type="text/css" href="prettify/prettify.css" />
+        <script src="prettify/prettify.js"></script>
+        <style>
+            pre.prettyprint {
+                border: 1px solid #dbdbdb;
+            }
+
+            dl {
+                margin-bottom: 5em;
+            }
+
+            dt {
+                font-weight: bold;
+            }
+
+            dd {
+                
+            }
+        </style>
+    </head>
+    <body onload="prettyPrint()">
+
+        <h1>Meldinger som kan mottas av server</h1>
+
+        <p>Serveren mottar helst bare vanlige strenger.</p>
+        <p>En kan også sende JSON-objekter:</p>
+        <pre class="prettyprint">
+{
+  command: "say",
+  value: "hei, folkens!"
+}</pre>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>say</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>Si noe til brukerne på servern.</dd>
+
+            <dt>Melding:</dt>
+            <dd><code>hei, folkens!</code></dd>
+            <dd> eller <code>/say hei, folkens!</code></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>who</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>Få en liste over tilkoblede brukere.</dd>
+
+            <dt>Melding:</dt>
+            <dd><code>/who</code></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>nick</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>Endre nick.</dd>
+
+            <dt>Melding:</dt>
+            <dd><code>/nick sisteboss</code></dd>
+        </dl>
+
+
+
+
+
+        <h1>Meldinger som sendes fra server</h1>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>user-connected</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>En annen bruker har koblet seg på serveren.</dd>
+
+            <dt>Melding:</dt>
+            <dd><pre class="prettyprint">
+{
+  type: "user-connected",
+  nick: "robinsk"
+}</pre></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>user-disconnected</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>En annen bruker har blitt frakoblet fra serveren.</dd>
+
+            <dt>Melding:</dt>
+            <dd><pre class="prettyprint">
+{
+  type: "user-disconnected",
+  nick: "robinsk"
+}</pre></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>user-says</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>En bruker sier noe.</dd>
+
+            <dt>Melding:</dt>
+            <dd><pre class="prettyprint">
+{
+  type: "user-says",
+  nick: "robinsk",
+  text: "hallo, verden!"
+}</pre></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>nick-change</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>En bruker endrer nick.</dd>
+
+            <dt>Melding:</dt>
+            <dd><pre class="prettyprint">
+{
+  type: "nick-change",
+  oldNick: "robinsk",
+  newNick: "sisteboss"
+}</pre></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>nick-list</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>Et array med alle brukere på serveren. Sendes som svar til <code>/who</code>.</dd>
+
+            <dt>Melding:</dt>
+            <dd><pre class="prettyprint">
+{
+  type: "nick-list",
+  list: ["robinsk", "vidar", "vinglepetter"]
+}</pre></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>error</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>Serveren sender en feilmelding.</dd>
+
+            <dt>Melding:</dt>
+            <dd><pre class="prettyprint">
+{
+  type: "error",
+  text: "The nick 'robinsk' is already taken"
+}</pre></dd>
+        </dl>
+
+        <dl>
+            <dt>Type:</dt>
+            <dd><code>notice</code></dd>
+
+            <dt>Beskrivelse:</dt>
+            <dd>Serveren sender en infomelding.</dd>
+
+            <dt>Melding:</dt>
+            <dd><pre class="prettyprint">
+{
+  type: "error",
+  text: "The server is shutting down"
+}</pre></dd>
+        </dl>
+
+    </body>
+</html>

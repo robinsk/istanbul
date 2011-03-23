@@ -1,0 +1,100 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='365' xmlns:x='http://ns.adobe.com/Extensibility/1.0/' xmlns:gliffy='http://www.gliffy.com' xmlns:a='http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:graph='http://ns.adobe.com/Graphs/1.0/' height='285' xmlns:i='http://ns.adobe.com/AdobeIllustrator/10.0/'> 
+  <!--
+  <rect width='461' stroke='#000000' x='0' height='379' y='0' fill='#ffffff' stroke-width='0' /> 
+  -->
+  <g transform='translate(4.5,4.5) rotate(0 178.5 37.5)'> 
+    <defs> 
+      <linearGradient y1='-25%' x2='50%' x1='50%' id='g0' y2='100%'> 
+        <stop stop-color='white' offset='0%' /> 
+        <stop stop-color='#d1d1d1' offset='100%' /> 
+      </linearGradient> 
+    </defs> 
+    <g transform='translate(4.0,4.0)'> 
+      <rect width='357.0' fill-opacity='.6' stroke='#A8A8A8' stroke-opacity='.6' height='75.0' fill='#A8A8A8' stroke-width='0' /> 
+    </g> 
+    <rect width='357.0' stroke='#333333' style='fill:url(#g0)' height='75.0' stroke-width='2' /> 
+    <g transform='translate(0.0,43.5)'> 
+      <text style='text-anchor: middle' x='178.5' y='-2.0'> 
+        <tspan font-family='Arial' font-weight='bold' xml:space='preserve' font-size='14' fill='#000000'>Server</tspan> 
+      </text> 
+    </g> 
+  </g> 
+  <g transform='translate(5.5,204.5) rotate(0 178.5 37.5)'> 
+    <defs> 
+      <linearGradient y1='-25%' x2='50%' x1='50%' id='g1' y2='100%'> 
+        <stop stop-color='white' offset='0%' /> 
+        <stop stop-color='#d1d1d1' offset='100%' /> 
+      </linearGradient> 
+    </defs> 
+    <g transform='translate(4.0,4.0)'> 
+      <rect width='357.0' fill-opacity='.6' stroke='#A8A8A8' stroke-opacity='.6' height='75.0' fill='#A8A8A8' stroke-width='0' /> 
+    </g> 
+    <rect width='357.0' stroke='#333333' style='fill:url(#g1)' height='75.0' stroke-width='2' /> 
+    <g transform='translate(0.0,43.5)'> 
+      <text style='text-anchor: middle' x='178.5' y='-2.0'> 
+        <tspan font-family='Arial' font-weight='bold' xml:space='preserve' font-size='14' fill='#000000'>Klient</tspan> 
+      </text> 
+    </g> 
+  </g> 
+  <g transform='translate(54.0,83.0)'> 
+    <line y1='1.8942124171510066' x2='-41.0' stroke='#000000' x1='-0.641840571100753' stroke-dasharray='23, 0' stroke-width='2' y2='121.0' /> 
+    <g transform='translate(0.0,0.0) rotate(108.71858897867983)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(-26.02893791424497,59.97106208575504)'></g> 
+  </g> 
+  <g transform='translate(78.0,201.0)'> 
+    <line y1='-1.9993752928162456' x2='-3.0' stroke='#000000' x1='-0.049984382320401866' stroke-dasharray='23, 0' stroke-width='2' y2='-120.0' /> 
+    <g transform='translate(0.0,0.0) rotate(268.5679038158354)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(-1.5015617679593856,-55.0)'></g> 
+  </g> 
+  <g transform='translate(133.0,199.0)'> 
+    <line y1='-1.9129546602558258' x2='-36.0' stroke='#000000' x1='-0.5836132861797423' stroke-dasharray='23, 0' stroke-width='2' y2='-118.0' /> 
+    <g transform='translate(0.0,0.0) rotate(253.03385189146383)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(-18.217613349360434,-54.0)'></g> 
+  </g> 
+  <g transform='translate(156.0,86.0)'> 
+    <line y1='2.0' x2='0.0' stroke='#000000' x1='0.0' stroke-dasharray='23, 0' stroke-width='2' y2='117.0' /> 
+    <g transform='translate(0.0,0.0) rotate(90.0)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(0.0,63.5)'></g> 
+  </g> 
+  <g transform='translate(287.0,202.0)'> 
+    <line y1='-1.8207329549252085' x2='-55.0' stroke='#000000' x1='-0.8276058886023702' stroke-dasharray='23, 0' stroke-width='2' y2='-121.0' /> 
+    <g transform='translate(0.0,0.0) rotate(245.55604521958347)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(-27.948167612686976,-55.5)'></g> 
+  </g> 
+  <g transform='translate(271.0,83.0)'> 
+    <line y1='1.8674922346040992' x2='-46.0' stroke='#000000' x1='-0.7158720232649045' stroke-dasharray='23, 0' stroke-width='2' y2='120.0' /> 
+    <g transform='translate(0.0,0.0) rotate(110.97349342132081)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(-28.662538826979507,59.3374611730205)'></g> 
+  </g> 
+  <g transform='translate(208.0,83.0)'> 
+    <line y1='1.9230478952816463' x2='-34.0' stroke='#000000' x1='-0.549442255794756' stroke-dasharray='23, 0' stroke-width='2' y2='119.0' /> 
+    <g transform='translate(0.0,0.0) rotate(105.94539590092285)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(-22.38476052359177,59.115239476408235)'> 
+      <rect width='189.0' x='-94.5' height='16' y='-10.0' fill='#ffffff' /> 
+      <text style='text-anchor: middle' x='0.0' y='2.0'> 
+        <tspan font-family='Arial' font-weight='bold' font-size='14px' fill='#000000'>meldinger fram og tilbake</tspan> 
+      </text> 
+    </g> 
+  </g> 
+  <g transform='translate(320.0,83.0)'> 
+    <line y1='2.0' x2='0.0' stroke='#000000' x1='0.0' stroke-dasharray='23, 0' stroke-width='2' y2='120.0' /> 
+    <g transform='translate(0.0,0.0) rotate(90.0)'> 
+      <polygon stroke='#000000' points='3.0,0 9.0,-3.0 9.0,3.0' fill='#000000' stroke-width='2.0' /> 
+    </g> 
+    <g transform='translate(0.0,65.0)'></g> 
+  </g> 
+</svg> 
