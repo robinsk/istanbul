@@ -14,11 +14,12 @@ Server
 
 * [node.js](http://nodejs.org/)
 * [Socket.IO](http://socket.io)
+* [Express](http://expressjs.com/)
 
-Run with `node istanbul-server.js`
+Run with `node server.js`
 
 
 Client
 ------
 
-Open `istanbul-client.html` in a decent browser.
+Open `public/client.html` in a decent browser.
